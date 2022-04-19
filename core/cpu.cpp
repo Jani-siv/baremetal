@@ -9,10 +9,19 @@ cpu::~cpu()
 {
 }
 
+std::uint32_t cpu::getRegisterValue(unsigned int num)
+{
+    if (num <16)
+        return this->GPregisters[num];
+    else return -1;
+}
+
 void cpu::TakeReset()
 {
-    for (auto i : this->GPregisters)
-        i = 0x0;
+    for (int i = 0; i < 16; i++)
+    {
+        this->GPregisters[i] = 0x0;
+    }
 
 /*
     VTOR = Zeros(32); //vector_table

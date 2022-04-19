@@ -5,6 +5,7 @@ class cpu {
     public:
         cpu();
         ~cpu();
+        std::uint32_t getRegisterValue(unsigned int num);
     private:
         std::uint32_t GPregisters[16];  //ARM core registers
         std::uint32_t * const MSP = &GPregisters[13];
