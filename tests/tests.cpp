@@ -1,4 +1,5 @@
 #include "../include/cpu.h"
+#include "../include/memory.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -6,13 +7,41 @@
 int testRegisterInit(cpu& cpuA);
 int testVectorTableAddressInit(cpu& cpuA);
 int testIPSRFlags(cpu& cpuA);
+int testCPUID(cpu& cpuA, cpu& cpuB);
 
-void runAllTests(cpu& cpuA)
+
+void runAllTests(cpu& cpuA, cpu& cpuB)
 {
     std::cout<<"Init testing"<<std::endl;
     testRegisterInit(cpuA);
     testVectorTableAddressInit(cpuA);
     testIPSRFlags(cpuA);
+    testCPUID(cpuA,cpuB);
+}
+
+int testCPUID(cpu& cpuA, cpu& cpuB)
+{
+    short first = cpuA.getCPUid();
+    if (first == 0)
+    {
+        std::cout<<"Test of first cpuID PASS: "<<first<<std::endl;
+        first = cpuB.getCPUid();
+        if ((first & 0x1) == 1)
+        {
+            std::cout<<"Test of second cpuID PASS: "<<first<<std::endl;
+        }
+        else
+        {
+            std::cout<<"Test of second cpuID FAIL: "<<first<<std::endl;
+            return -1;
+        }
+    }
+    else
+    {
+        std::cout<<"Test of first cpuID FAIL: "<<first<<std::endl;
+        return -1;
+    }
+return 0;
 }
 
 int testRegisterInit(cpu& cpuA)
@@ -68,14 +97,17 @@ int testIPSRFlags(cpu& cpuA)
 }
 int main(int argc, char *argv[])
 {
-    cpu cpuA;
+    memory mainMemory;
+    memory *ptr = &mainMemory;
+    cpu cpuA(ptr);
+    cpu cpuB(ptr);
     std::vector<std::string> arguments(argv, argv + argc);
 
 for (std::string arg : arguments)
 {
     if (arg == "-all")
     {
-        runAllTests(cpuA);        
+        runAllTests(cpuA, cpuB);        
     }
 }
 return 0;

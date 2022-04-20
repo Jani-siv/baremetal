@@ -1,4 +1,4 @@
-add_executable(tests tests.cpp ../core/cpu.cpp)
+add_executable(tests tests.cpp ../core/cpu.cpp ../core/memory.cpp)
 include_directories(${CMAKE_SOURCE_DIR}/core)
 
 

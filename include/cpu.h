@@ -2,17 +2,23 @@
 #define VECTORTABLEMAX 0xFFFFFF80
 #define THREADMODE false
 #define HANDLERMODE true
+#define ROMSIZE 16000
 #include <iostream>
+#include "../include/memory.h"
 
 class cpu {
     public:
-        cpu();
+        cpu(memory* mainMemory);
         ~cpu();
+        short getCPUid();
         std::uint32_t getRegisterValue(unsigned int num);
         std::uint32_t getVectorTableStartAddress();
         std::uint32_t getIPSRFlags();
 
     private:
+        short CPUID;
+        short getCPUID();
+        unsigned char ROMMemory[ROMSIZE];
         std::uint32_t GPregisters[16];  //ARM core registers
         std::uint32_t * const MSP = &GPregisters[13];
         std::uint32_t * PSP = nullptr;
@@ -30,6 +36,7 @@ class cpu {
         uint32_t VTOR;                  //vectortable offset
         uint32_t vectortable;
         bool processorMode;
+        memory *ptr = nullptr;
         
 
 

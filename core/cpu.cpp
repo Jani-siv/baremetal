@@ -1,12 +1,22 @@
 #include "../include/cpu.h"
 
-cpu::cpu()
+cpu::cpu(memory* mainMemory)
 {
+    this->ptr = mainMemory;
+    this->CPUID = this->getCPUID();
     this->TakeReset();
 }
 
 cpu::~cpu()
 {
+}
+short cpu::getCPUid()
+{
+    return this->CPUID;
+}
+short cpu::getCPUID()
+{
+    return this->ptr->getCPUID();
 }
 
 std::uint32_t cpu::getIPSRFlags()
