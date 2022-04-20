@@ -5,12 +5,14 @@
 
 int testRegisterInit(cpu& cpuA);
 int testVectorTableAddressInit(cpu& cpuA);
+int testIPSRFlags(cpu& cpuA);
 
 void runAllTests(cpu& cpuA)
 {
     std::cout<<"Init testing"<<std::endl;
     testRegisterInit(cpuA);
     testVectorTableAddressInit(cpuA);
+    testIPSRFlags(cpuA);
 }
 
 int testRegisterInit(cpu& cpuA)
@@ -47,6 +49,23 @@ int testVectorTableAddressInit(cpu& cpuA)
     }
 }
 
+int testIPSRFlags(cpu& cpuA)
+{
+    std::uint32_t test = cpuA.getIPSRFlags();
+    if ((test & 0x1F) > 0x00)
+    {
+        std::cout<<"IPSRFlags init FAIL"<<std::endl;
+        std::cout<<"IPSRFlags value: "<<std::hex<<(test & 0x1F)<<std::endl;
+    return -1;
+    }
+    else
+    {
+        std::cout<<"IPSRFlags init PASS"<<std::endl;
+        std::cout<<"IPSRFlags value: "<<std::hex<<(test & 0x1F)<<std::endl;
+    return 0;
+    }
+
+}
 int main(int argc, char *argv[])
 {
     cpu cpuA;

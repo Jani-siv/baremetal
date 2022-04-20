@@ -9,6 +9,11 @@ cpu::~cpu()
 {
 }
 
+std::uint32_t cpu::getIPSRFlags()
+{
+    return this->xPSRRegisters.IPSR;
+}
+
 std::uint32_t cpu::getRegisterValue(unsigned int num)
 {
     if (num <16)
@@ -21,19 +26,30 @@ std::uint32_t cpu::getVectorTableStartAddress()
     return this->vectortable;
 }
 
+
 void cpu::TakeReset()
 {
     for (int i = 0; i < 16; i++)
     {
         this->GPregisters[i] = 0x0;
     }
+    
     //vector table offset
     this->VTOR = 0x0;
+    //set vector table start address with mask
     this->vectortable = this->VTOR & 0xFFFFFF80;
 
+    //set processor mode
+    this->processorMode = THREADMODE;
+    
+    //LR value from usersoftware
+
+    //IPSR<5:0> = zeros
+    for (int i = 0; i < 6; i++)
+    {
+        this->xPSRRegisters.IPSR &= ~(1UL << i);
+    }
 /*
-bits(32) vectortable = VTOR;
-CurrentMode = Mode_Thread;
 LR = bits(32) UNKNOWN;
 // Value must be initialised by software
 APSR = bits(32) UNKNOWN;
