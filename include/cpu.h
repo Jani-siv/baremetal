@@ -1,4 +1,5 @@
 #pragma once
+#define VECTORTABLEMAX 0xFFFFFF80
 #include <iostream>
 
 class cpu {
@@ -6,6 +7,7 @@ class cpu {
         cpu();
         ~cpu();
         std::uint32_t getRegisterValue(unsigned int num);
+        std::uint32_t getVectorTableStartAddress();
     private:
         std::uint32_t GPregisters[16];  //ARM core registers
         std::uint32_t * const MSP = &GPregisters[13];
@@ -21,5 +23,7 @@ class cpu {
             std::uint32_t EPSR;         //execution program status register
         }xPSR;
         xPSR xPSRRegisters;
+        uint32_t VTOR;                  //vectortable offset
+        uint32_t vectortable;
         void TakeReset();
 };

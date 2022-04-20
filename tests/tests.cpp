@@ -4,12 +4,13 @@
 #include <string>
 
 int testRegisterInit(cpu& cpuA);
-
+int testVectorTableAddressInit(cpu& cpuA);
 
 void runAllTests(cpu& cpuA)
 {
     std::cout<<"Init testing"<<std::endl;
     testRegisterInit(cpuA);
+    testVectorTableAddressInit(cpuA);
 }
 
 int testRegisterInit(cpu& cpuA)
@@ -29,6 +30,22 @@ int testRegisterInit(cpu& cpuA)
     }
 }
         
+int testVectorTableAddressInit(cpu& cpuA)
+{
+    std::uint32_t test = cpuA.getVectorTableStartAddress();
+    if (test != 0x0)
+    {
+        std::cout<<"Vector table init FAIL"<<std::endl;
+        std::cout<<"Vector table start address is: "<<test<<std::endl;
+        return -1;
+    }
+    else
+    {
+        std::cout<<"Vector table init PASS"<<std::endl;
+        std::cout<<"Vector table start address is: "<<test<<std::endl;
+        return 0;
+    }
+}
 
 int main(int argc, char *argv[])
 {

@@ -16,17 +16,22 @@ std::uint32_t cpu::getRegisterValue(unsigned int num)
     else return -1;
 }
 
+std::uint32_t cpu::getVectorTableStartAddress()
+{
+    return this->vectortable;
+}
+
 void cpu::TakeReset()
 {
     for (int i = 0; i < 16; i++)
     {
         this->GPregisters[i] = 0x0;
     }
+    //vector table offset
+    this->VTOR = 0x0;
+    this->vectortable = this->VTOR & 0xFFFFFF80;
 
 /*
-    VTOR = Zeros(32); //vector_table
-for i = 0 to 12
-R[i] = bits(32) UNKNOWN;
 bits(32) vectortable = VTOR;
 CurrentMode = Mode_Thread;
 LR = bits(32) UNKNOWN;
