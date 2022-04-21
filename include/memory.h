@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <cstring>
 #define ROMSIZE 16000
 #define SRAMSIZE 264000
 #define USBRAMSIZE 3000
@@ -14,11 +15,19 @@ class memory{
         memory();
         ~memory();
         short getCPUID();
+        void writeMemory(std::uint32_t address,const char &value);
+        char* readMemory(std::uint32_t address);
+
     private:
+        void writeRom(const std::uint32_t address,const char &value);
+        void writeSram(std::uint32_t address, const char &value);
+        void writeUsbram(std::uint32_t address, const char &value);
+        uint32_t *stackBaseAddress = nullptr;
+        uint32_t *tempStackBaseAddress = nullptr;
         void initSIO();
-        unsigned char ROM[ROMSIZE];
-        unsigned char SRAM[SRAMSIZE];
-        unsigned char USBRAM[USBRAMSIZE];
+        char ROM[ROMSIZE];
+        char SRAM[SRAMSIZE];
+        char USBRAM[USBRAMSIZE];
         std::uint32_t SIO[SIOREGISTERS];
         void initMemory();
 };

@@ -4,12 +4,30 @@ cpu::cpu(memory* mainMemory)
 {
     this->ptr = mainMemory;
     this->CPUID = this->getCPUID();
+    //sleep other cores, core 0 init all
+    if (this->CPUID == 0x0)
+    {
+    }
+
     this->TakeReset();
+    
 }
 
 cpu::~cpu()
 {
 }
+
+void cpu::writeMemory(std::uint32_t address, const char &value)
+{
+    this->ptr->writeMemory(address,value);
+}
+
+char* cpu::readMemory(std::uint32_t address)
+{
+    this->dataFromMemory = this->ptr->readMemory(address);
+    return this->dataFromMemory;
+}
+
 short cpu::getCPUid()
 {
     return this->CPUID;

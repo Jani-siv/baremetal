@@ -1,4 +1,5 @@
 #pragma once
+//26 interrupts
 #define VECTORTABLEMAX 0xFFFFFF80
 #define THREADMODE false
 #define HANDLERMODE true
@@ -14,13 +15,15 @@ class cpu {
         std::uint32_t getRegisterValue(unsigned int num);
         std::uint32_t getVectorTableStartAddress();
         std::uint32_t getIPSRFlags();
+        void writeMemory(std::uint32_t address, const char &value);
+        char * readMemory(std::uint32_t address);
 
     private:
+        char * dataFromMemory = nullptr;
         short CPUID;
         short getCPUID();
-        unsigned char ROMMemory[ROMSIZE];
         std::uint32_t GPregisters[16];  //ARM core registers
-        std::uint32_t * const MSP = &GPregisters[13];
+        std::uint32_t * MSP = nullptr;
         std::uint32_t * PSP = nullptr;
         std::uint32_t * const _LR = &GPregisters[14];   //contain return address from subroutine
         std::uint32_t * const _PC = &GPregisters[15];

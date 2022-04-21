@@ -8,6 +8,8 @@ int testRegisterInit(cpu& cpuA);
 int testVectorTableAddressInit(cpu& cpuA);
 int testIPSRFlags(cpu& cpuA);
 int testCPUID(cpu& cpuA, cpu& cpuB);
+int testMemoryWriteAndRead(cpu& cpuA, cpu& cpuB);
+
 
 
 void runAllTests(cpu& cpuA, cpu& cpuB)
@@ -17,6 +19,63 @@ void runAllTests(cpu& cpuA, cpu& cpuB)
     testVectorTableAddressInit(cpuA);
     testIPSRFlags(cpuA);
     testCPUID(cpuA,cpuB);
+    testMemoryWriteAndRead(cpuA, cpuB);
+}
+
+int testMemoryWriteAndRead(cpu& cpuA, cpu& cpuB)
+{
+    bool pass = true;
+    //write to ROM
+    cpuA.writeMemory(0x00000000,0x41);
+    //write to SRAM
+    cpuA.writeMemory(0x20000000,0x41);
+    //write to USBRAM
+    cpuA.writeMemory(0x50100401,0x41);
+    //test read
+        char * testing = cpuA.readMemory(0x00000000);
+        char testValue[1] = {0x41};
+        char * test;
+        test = testValue;
+        if (std::strcmp(testing,test) != 0)
+        {
+        std::cout<<"Memory read from cpuA FAIL"<<std::endl;
+        std::cout<<"Value from ROM read is: "<<testing<<std::endl;
+        pass = false;
+        }
+        testing = nullptr;
+        testing = cpuB.readMemory(0x00000000);
+        if (std::strcmp(testing,test) !=0)
+        {
+            std::cout<<"Memory read from cpuB FAIL"<<std::endl;
+            std::cout<<"Value from ROM read is: "<<testing<<std::endl;
+            pass = false; 
+        }
+        testing = nullptr;
+        testing = cpuA.readMemory(0x20000000);
+        if (std::strcmp(testing,test) !=0)
+        {
+            std::cout<<"Memory read from SRAM FAIL"<<std::endl;
+            std::cout<<"Value from SRAM read is: "<<testing<<std::endl;
+            pass = false;
+        }
+        testing = nullptr;
+        testing = cpuA.readMemory(0x50100401);
+        std::cout<<"From test: "<<testing<<std::endl;
+        if (std::strcmp(testing,test) !=0)
+        {
+            std::cout<<"Memory read from USBRAM FAIL"<<std::endl;
+            std::cout<<"Value from USBRAM read is: "<<testing<<std::endl;
+            pass = false;
+        }
+if (pass)
+{
+    std::cout<<"Memory read and write in every memory region with both cpu PASS"<<std::endl;
+}
+else
+{
+    std::cout<<"Memory read and write test FAIL"<<std::endl;
+}
+        return 0;
 }
 
 int testCPUID(cpu& cpuA, cpu& cpuB)
