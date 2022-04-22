@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/core.dir/main.cpp.o CMakeFiles/core.dir/decoder.cpp.o CMakeFiles/core.dir/cpu.cpp.o CMakeFiles/core.dir/memory.cpp.o -o core 
