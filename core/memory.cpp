@@ -7,6 +7,26 @@ memory::memory()
 memory::~memory()
 {
 }
+std::uint32_t memory::readMemory32(std::uint32_t address)
+{
+    std::uint32_t data = 0x0;
+    for (int i = 0; i < 2; i++)
+    {
+        data = (data << 16);
+        data += this->readMemory((address+(i*2)));
+    }
+    return data;
+}
+
+void memory::writeMemory32(std::uint32_t address, const std::uint32_t &value)
+{
+    std::uint16_t high, low;
+    high = value >> 16;
+    low = value;
+    this->writeMemory(address, high);
+    this->writeMemory((address+2), low);
+}
+
 std::uint16_t memory::readMemory(std::uint32_t address)
 {
     std::uint16_t data = 0x0;

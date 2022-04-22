@@ -26,6 +26,7 @@ int testMemoryWriteAndRead(cpu& cpuA, cpu& cpuB)
 {
     bool pass = true;
     std::uint16_t testValue = 0x4141;
+    std::uint32_t testValue32 = 0x41414141;
     //write to ROM
     cpuA.writeMemory(0x00000000,testValue);
     //write to SRAM
@@ -33,6 +34,15 @@ int testMemoryWriteAndRead(cpu& cpuA, cpu& cpuB)
     //write to USBRAM
     cpuA.writeMemory(0x50100400,testValue);
     //test read
+    cpuA.writeMemory32(0x00000020, testValue32);
+
+        std::uint32_t testing32 = cpuA.readMemory32(0x00000020);
+        if (testing32 != testValue32)
+        {
+            std::cout<<"Memory read 32 bus FAIL"<<std::endl;
+            std::cout<<"Value from 32 bus: "<<testing32<<std::endl;
+            pass = false;     
+        }
         std::uint16_t testing = cpuA.readMemory(0x00000000);
         if (testing != testValue)
         {
@@ -64,6 +74,7 @@ int testMemoryWriteAndRead(cpu& cpuA, cpu& cpuB)
             std::cout<<"Value from USBRAM read is: "<<testing<<std::endl;
             pass = false;
         }
+
 if (pass)
 {
     std::cout<<"Memory read and write in every memory region with both cpu PASS"<<std::endl;

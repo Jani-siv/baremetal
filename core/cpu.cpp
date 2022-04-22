@@ -17,11 +17,11 @@ cpu::~cpu()
 {
 }
 
-std::uint16_t cpu::fetchCycle()
+std::uint32_t cpu::fetchCycle()
 {
     uint32_t address = this->_PC[0];
     this->setNextInstructionAddress();
-    uint16_t data = this->readMemory(address);
+    uint32_t data = this->readMemory32(address);
     return data;
 }
 
@@ -40,10 +40,21 @@ void cpu::writeMemory(std::uint32_t address, const std::uint16_t &value)
     this->ptr->writeMemory(address,value);
 }
 
+void cpu::writeMemory32(std::uint32_t address, const std::uint32_t &value)
+{
+    this->ptr->writeMemory32(address, value);
+}
+
 std::uint16_t cpu::readMemory(std::uint32_t address)
 {
     std::uint16_t dataFromMemory = this->ptr->readMemory(address);
     return dataFromMemory;
+}
+
+std::uint32_t cpu::readMemory32(std::uint32_t address)
+{
+    std::uint32_t data = this->ptr->readMemory32(address);
+    return data;
 }
 
 short cpu::getCPUid()
