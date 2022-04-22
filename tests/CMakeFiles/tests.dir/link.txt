@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/tests.dir/tests.cpp.o CMakeFiles/tests.dir/__/core/cpu.cpp.o CMakeFiles/tests.dir/__/core/memory.cpp.o CMakeFiles/tests.dir/__/core/decoder.cpp.o -o tests 

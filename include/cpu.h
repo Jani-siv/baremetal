@@ -6,8 +6,10 @@
 #define ROMSIZE 16000
 #include <iostream>
 #include "../include/memory.h"
+#include "../include/decoder.h"
+#include "../include/opcodes.h"
 
-class cpu {
+class cpu : public decoder {
     public:
         cpu(memory* mainMemory);
         ~cpu();

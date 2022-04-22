@@ -4,6 +4,7 @@ cpu::cpu(memory* mainMemory)
 {
     this->ptr = mainMemory;
     this->CPUID = this->getCPUID();
+    this->decodeCycle(0xA0A0A0A0);
     //sleep other cores, core 0 init all
     if (this->CPUID == 0x0)
     {
@@ -19,15 +20,16 @@ cpu::~cpu()
 
 std::uint32_t cpu::fetchCycle()
 {
-    uint32_t address = this->_PC[0];
+    uint16_t address = this->_PC[0];
     this->setNextInstructionAddress();
-    uint32_t data = this->readMemory32(address);
+    uint16_t data = this->readMemory(address);
     return data;
 }
 
 void cpu::decodeCycle(std::uint32_t data)
 {
     
+    std::cout<<"decodeCycle: "<<decodeOP(0xB570)<<std::endl;
 }
 
 void cpu::setNextInstructionAddress()
