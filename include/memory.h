@@ -16,13 +16,13 @@ class memory{
         memory();
         ~memory();
         short getCPUID();
-        void writeMemory(std::uint32_t address,const std::uint32_t &value);
-        std::uint32_t readMemory(std::uint32_t address);
+        void writeMemory(std::uint32_t address,const std::uint16_t &value);
+        std::uint16_t readMemory(std::uint32_t address);
 
     private:
-        void writeRom(const std::uint32_t address,const std::uint32_t &value);
-        void writeSram(std::uint32_t address, const std::uint32_t &value);
-        void writeUsbram(std::uint32_t address, const std::uint32_t &value);
+        void writeRom(const std::uint32_t address,const std::uint16_t &value);
+        void writeSram(std::uint32_t address, const std::uint16_t &value);
+        void writeUsbram(std::uint32_t address, const std::uint16_t &value);
         uint32_t *stackBaseAddress = nullptr;
         uint32_t *tempStackBaseAddress = nullptr;
         void initSIO();

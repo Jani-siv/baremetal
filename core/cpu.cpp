@@ -17,14 +17,32 @@ cpu::~cpu()
 {
 }
 
-void cpu::writeMemory(std::uint32_t address, const std::uint32_t &value)
+std::uint16_t cpu::fetchCycle()
+{
+    uint32_t address = this->_PC[0];
+    this->setNextInstructionAddress();
+    uint16_t data = this->readMemory(address);
+    return data;
+}
+
+void cpu::decodeCycle(std::uint32_t data)
+{
+    
+}
+
+void cpu::setNextInstructionAddress()
+{
+    this->_PC += 2;
+}
+
+void cpu::writeMemory(std::uint32_t address, const std::uint16_t &value)
 {
     this->ptr->writeMemory(address,value);
 }
 
-std::uint32_t cpu::readMemory(std::uint32_t address)
+std::uint16_t cpu::readMemory(std::uint32_t address)
 {
-    std::uint32_t dataFromMemory = this->ptr->readMemory(address);
+    std::uint16_t dataFromMemory = this->ptr->readMemory(address);
     return dataFromMemory;
 }
 

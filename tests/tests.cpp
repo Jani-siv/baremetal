@@ -25,7 +25,7 @@ void runAllTests(cpu& cpuA, cpu& cpuB)
 int testMemoryWriteAndRead(cpu& cpuA, cpu& cpuB)
 {
     bool pass = true;
-    std::uint32_t testValue = 0x12345678;
+    std::uint16_t testValue = 0x4141;
     //write to ROM
     cpuA.writeMemory(0x00000000,testValue);
     //write to SRAM
@@ -33,7 +33,7 @@ int testMemoryWriteAndRead(cpu& cpuA, cpu& cpuB)
     //write to USBRAM
     cpuA.writeMemory(0x50100400,testValue);
     //test read
-        std::uint32_t testing = cpuA.readMemory(0x00000000);
+        std::uint16_t testing = cpuA.readMemory(0x00000000);
         if (testing != testValue)
         {
         std::cout<<"Memory read from cpuA FAIL"<<std::endl;

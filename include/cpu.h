@@ -15,17 +15,23 @@ class cpu {
         std::uint32_t getRegisterValue(unsigned int num);
         std::uint32_t getVectorTableStartAddress();
         std::uint32_t getIPSRFlags();
-        void writeMemory(std::uint32_t address, const std::uint32_t &value);
-        std::uint32_t readMemory(std::uint32_t address);
+        void writeMemory(std::uint32_t address, const std::uint16_t &value);
+        std::uint16_t readMemory(std::uint32_t address);
 
     private:
         short CPUID;
         short getCPUID();
+        std::uint16_t fetchCycle();
+        void decodeCycle(std::uint32_t data);
+        void executeCycle();
+        void * checkInterrputsRegisters();
+        void * checkXIPRegisters();
+        void setNextInstructionAddress();
         std::uint32_t GPregisters[16];  //ARM core registers
         std::uint32_t * MSP = nullptr;
         std::uint32_t * PSP = nullptr;
-        std::uint32_t * const _LR = &GPregisters[14];   //contain return address from subroutine
-        std::uint32_t * const _PC = &GPregisters[15];
+        std::uint32_t * LR = &GPregisters[14];   //contain return address from subroutine
+        std::uint32_t * _PC = &GPregisters[15];
         std::uint32_t StatusRegisters;
         std::uint32_t PRIMASK;       //prioritization scheme for exeptions and interrupts
         std::uint32_t CONTROL;       //identified current stack
