@@ -15,11 +15,10 @@ class cpu {
         std::uint32_t getRegisterValue(unsigned int num);
         std::uint32_t getVectorTableStartAddress();
         std::uint32_t getIPSRFlags();
-        void writeMemory(std::uint32_t address, const char &value);
-        char * readMemory(std::uint32_t address);
+        void writeMemory(std::uint32_t address, const std::uint32_t &value);
+        std::uint32_t readMemory(std::uint32_t address);
 
     private:
-        char * dataFromMemory = nullptr;
         short CPUID;
         short getCPUID();
         std::uint32_t GPregisters[16];  //ARM core registers

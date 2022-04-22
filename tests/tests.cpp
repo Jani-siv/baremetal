@@ -25,43 +25,40 @@ void runAllTests(cpu& cpuA, cpu& cpuB)
 int testMemoryWriteAndRead(cpu& cpuA, cpu& cpuB)
 {
     bool pass = true;
+    std::uint32_t testValue = 0x12345678;
     //write to ROM
-    cpuA.writeMemory(0x00000000,0x41);
+    cpuA.writeMemory(0x00000000,testValue);
     //write to SRAM
-    cpuA.writeMemory(0x20000000,0x41);
+    cpuA.writeMemory(0x20000000,testValue);
     //write to USBRAM
-    cpuA.writeMemory(0x50100401,0x41);
+    cpuA.writeMemory(0x50100400,testValue);
     //test read
-        char * testing = cpuA.readMemory(0x00000000);
-        char testValue[1] = {0x41};
-        char * test;
-        test = testValue;
-        if (std::strcmp(testing,test) != 0)
+        std::uint32_t testing = cpuA.readMemory(0x00000000);
+        if (testing != testValue)
         {
         std::cout<<"Memory read from cpuA FAIL"<<std::endl;
         std::cout<<"Value from ROM read is: "<<testing<<std::endl;
         pass = false;
         }
-        testing = nullptr;
+        testing = 0x0;
         testing = cpuB.readMemory(0x00000000);
-        if (std::strcmp(testing,test) !=0)
+        if (testing != testValue)
         {
             std::cout<<"Memory read from cpuB FAIL"<<std::endl;
             std::cout<<"Value from ROM read is: "<<testing<<std::endl;
             pass = false; 
         }
-        testing = nullptr;
+        testing = 0x0;
         testing = cpuA.readMemory(0x20000000);
-        if (std::strcmp(testing,test) !=0)
+        if (testing != testValue)
         {
             std::cout<<"Memory read from SRAM FAIL"<<std::endl;
             std::cout<<"Value from SRAM read is: "<<testing<<std::endl;
             pass = false;
         }
-        testing = nullptr;
-        testing = cpuA.readMemory(0x50100401);
-        std::cout<<"From test: "<<testing<<std::endl;
-        if (std::strcmp(testing,test) !=0)
+        testing = 0x0;
+        testing = cpuA.readMemory(0x50100400);
+        if (testing != testValue)
         {
             std::cout<<"Memory read from USBRAM FAIL"<<std::endl;
             std::cout<<"Value from USBRAM read is: "<<testing<<std::endl;

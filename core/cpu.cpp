@@ -17,15 +17,15 @@ cpu::~cpu()
 {
 }
 
-void cpu::writeMemory(std::uint32_t address, const char &value)
+void cpu::writeMemory(std::uint32_t address, const std::uint32_t &value)
 {
     this->ptr->writeMemory(address,value);
 }
 
-char* cpu::readMemory(std::uint32_t address)
+std::uint32_t cpu::readMemory(std::uint32_t address)
 {
-    this->dataFromMemory = this->ptr->readMemory(address);
-    return this->dataFromMemory;
+    std::uint32_t dataFromMemory = this->ptr->readMemory(address);
+    return dataFromMemory;
 }
 
 short cpu::getCPUid()

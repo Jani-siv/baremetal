@@ -7,26 +7,43 @@ memory::memory()
 memory::~memory()
 {
 }
-char* memory::readMemory(std::uint32_t address)
+std::uint32_t memory::readMemory(std::uint32_t address)
 {
+    std::uint32_t data = 0x0;
     if (address < SRAMBASE)
     {
-        return &this->ROM[address];
+        for (int i=0; i < 4; i++)
+        {
+            data = (data << 8);
+            data += this->ROM[address+i];
+        }
+            return data;
+        
     }
     else if (address >= SRAMBASE && address < USBRAMBASE)
     {
         address -= SRAMBASE;
-        return &this->SRAM[address];
+        for (int i=0; i < 4; i++)
+        {
+            data = (data << 8);
+            data += this->SRAM[address+i];
+        }
+        return data;
     }
     else if (address >= USBRAMBASE)
     {
         address -= USBRAMBASE;
-        return &this->USBRAM[address];
+        for (int i=0; i < 4; i++)
+        {
+            data = (data << 8);
+            data += this->USBRAM[address+i];
+        }
+        return data;
     }
     std::cout<<"Memory error"<<std::endl;
-return nullptr;
+return 0x0;
 }
-void memory::writeMemory(std::uint32_t address,const char &value)
+void memory::writeMemory(std::uint32_t address,const std::uint32_t &value)
 {
     if (address < SRAMBASE)
     {
@@ -43,22 +60,42 @@ void memory::writeMemory(std::uint32_t address,const char &value)
 
 }
 
-void memory::writeRom(const std::uint32_t address,const char &value)
+void memory::writeRom(const std::uint32_t address,const std::uint32_t &value)
 {
-    std::memcpy(&this->ROM[address],&value,sizeof(char));
+    std::uint32_t mask = 0x000000FF;
+    for (int i = 0; i < 4; i++)
+    {
+        char convertedValue[1];
+        convertedValue[0] = (value & mask) >> (8*i);
+        std::memcpy(&this->ROM[(address+(3-i))],&convertedValue[0],sizeof(char));
+        mask = (mask << 8);
+    }
 }
 
-void memory::writeSram(std::uint32_t address,const char &value)
+void memory::writeSram(std::uint32_t address,const std::uint32_t &value)
 {
    address -= SRAMBASE;
-   std::memcpy(&this->SRAM[address],&value,sizeof(char));
+    std::uint32_t mask = 0x000000FF;
+    for (int i = 0; i < 4; i++)
+    {   
+        char convertedValue[1];
+        convertedValue[0] = (value & mask) >> (8*i);
+        std::memcpy(&this->SRAM[(address+(3-i))],&convertedValue[0],sizeof(char));
+        mask = (mask << 8);
+    }
 }
 
-void memory::writeUsbram(std::uint32_t address,const char &value)
+void memory::writeUsbram(std::uint32_t address,const std::uint32_t &value)
 {
     address -= USBRAMBASE;
-    std::cout<<"From usb ram address after - : "<<address<<" Value: "<<value<<std::endl;
-    std::memcpy(&this->USBRAM[address],&value,sizeof(char));
+    std::uint32_t mask = 0x000000FF;
+    for (int i = 0; i < 4; i++)
+    {
+        char convertedValue[1];
+        convertedValue[0] = (value & mask) >> (8*i);
+        std::memcpy(&this->USBRAM[(address+(3-i))],&convertedValue[0],sizeof(char));
+        mask = (mask << 8);
+    }
 }
 
 void memory::initMemory()
