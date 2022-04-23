@@ -4,7 +4,6 @@ cpu::cpu(memory* mainMemory)
 {
     this->ptr = mainMemory;
     this->CPUID = this->getCPUID();
-    this->decodeCycle(0xA0A0A0A0);
     //sleep other cores, core 0 init all
     if (this->CPUID == 0x0)
     {
@@ -17,24 +16,91 @@ cpu::cpu(memory* mainMemory)
 cpu::~cpu()
 {
 }
+void cpu::runCpu()
+{
+    std::cout<<"Starting processor"<<std::endl;
+    std::cout<<"next instruction write n"<<std::endl;
+    std::cout<<"stop processor write q"<<std::endl;
+    char userInput[1];
+    char *compare = &userInput[0];
+    while (strcmp(compare, "q") != 0)
+    {
+        std::uint32_t data = this->fetchCycle();
+        std::cout<<"data from memoty: "<<std::hex<<static_cast<int>(data)<<std::endl;
+        this->decodeCycle(data);
+        std::cout<<"General purpose registers:"<<std::endl;
+        this->printRegistersValues();
+        std::cout<<"stop processor write q"<<std::endl;
+
+        std::cin >> compare;
+    }
+}
+
+void cpu::printRegistersValues()
+{
+    int i = 0;
+    for (auto& value : this->GPregisters)
+    {
+        std::cout<<std::dec<<"R"<<i<<" Value: ";
+        std::cout<<std::hex<<static_cast<int>(value)<<std::endl;
+        i++;
+    }
+}
 
 std::uint32_t cpu::fetchCycle()
 {
-    uint16_t address = this->_PC[0];
+    uint32_t address = this->_PC[0];
+    std::cout<<"address: "<<std::hex<<static_cast<int>(address)<<std::endl;
+    std::cout<<"PC* "<<std::hex<<static_cast<int>(this->_PC[0])<<std::endl;
     this->setNextInstructionAddress();
-    uint16_t data = this->readMemory(address);
+    uint32_t data = this->readMemory32(address);
     return data;
 }
 
 void cpu::decodeCycle(std::uint32_t data)
 {
-    
-    std::cout<<"decodeCycle: "<<decodeOP(0xB570)<<std::endl;
+    unsigned int decodedValue = 0;
+    uint16_t opToDecode = (data >> 16);
+    decodedValue = decodeOP(opToDecode);
+    switch(decodedValue)
+    {
+        case LSLS:
+             {
+                 std::cout<<"LSLS"<<std::endl;
+                 break;
+             }
+        case MOVS:
+             {
+                 std::cout<<"MOVS"<<std::endl;
+                 break;
+             }
+        case STR:
+             {
+                 std::cout<<"STR"<<std::endl;
+                 break;
+             }
+        case PUSH:
+             {
+                 std::cout<<"PUSH"<<std::endl;
+                 break;
+             }
+        case BL:
+             {
+                 std::cout<<"BL"<<std::endl;
+                 break;
+             }
+        default:
+             {
+                 std::cout<<"Unknow command"<<std::endl;
+                 break;
+             }
+    }
+
 }
 
 void cpu::setNextInstructionAddress()
 {
-    this->_PC += 2;
+    this->GPregisters[15] += 4;
 }
 
 void cpu::writeMemory(std::uint32_t address, const std::uint16_t &value)

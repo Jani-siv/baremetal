@@ -1,10 +1,10 @@
 #pragma once
 typedef enum opcodes
 {
-    ADC = 0,
-    ADDimmidiate,
-    ADDregister,
-    ADDspPlusImmidiate,
-    PUSH = 12
+    LSLS = 0x0,
+    MOVS = 0x2,
+    STR  = 0x6,
+    PUSH = 0xB,
+    BL   = 0xF
 }opcodes;
 

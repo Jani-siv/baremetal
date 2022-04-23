@@ -15,11 +15,26 @@ int testMemoryWriteAndRead(cpu& cpuA, cpu& cpuB);
 void runAllTests(cpu& cpuA, cpu& cpuB)
 {
     std::cout<<"Init testing"<<std::endl;
-    testRegisterInit(cpuA);
-    testVectorTableAddressInit(cpuA);
-    testIPSRFlags(cpuA);
-    testCPUID(cpuA,cpuB);
-    testMemoryWriteAndRead(cpuA, cpuB);
+    bool passTests = true;
+    if (testRegisterInit(cpuA) < 0) exit(-1);
+    if (testVectorTableAddressInit(cpuA) < 0) exit(-1);
+    if (testIPSRFlags(cpuA) < 0) exit(-1);
+    if (testCPUID(cpuA,cpuB) < 0) exit(-1);
+    if (testMemoryWriteAndRead(cpuA, cpuB) < 0) exit(-1);
+    std::cout<<"Do you want run cpu? y/n:"<<std::endl;
+    char temp[1];
+    char *answer = temp;
+    std::cin >> answer;
+    if (answer[0] == 'y')
+    {
+    //set test data to test assembly
+    cpuA.writeMemory(0x00000000, 0x0000);
+    cpuA.writeMemory(0x00000004, 0x2000);
+    cpuA.writeMemory(0x00000008, 0x6000);
+    cpuA.writeMemory(0x0000000C, 0xB000);
+    cpuA.writeMemory(0x00000010, 0xF000);
+    cpuA.runCpu();
+    }
 }
 
 int testMemoryWriteAndRead(cpu& cpuA, cpu& cpuB)

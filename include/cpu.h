@@ -21,6 +21,7 @@ class cpu : public decoder {
         void writeMemory32(std::uint32_t address, const std::uint32_t &value);
         std::uint16_t readMemory(std::uint32_t address);
         std::uint32_t readMemory32(std::uint32_t address);
+        void runCpu();
 
     private:
         short CPUID;
@@ -49,7 +50,7 @@ class cpu : public decoder {
         uint32_t vectortable;
         bool processorMode;
         memory *ptr = nullptr;
-        
+        void printRegistersValues(); 
 
 
         void TakeReset();
