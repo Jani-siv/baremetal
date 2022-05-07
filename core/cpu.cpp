@@ -1,6 +1,6 @@
 #include "../include/cpu.h"
 
-cpu::cpu(memory* mainMemory)
+cpu::cpu(core::memory* mainMemory)
 {
     this->ptr = mainMemory;
     this->CPUID = this->getCPUID();

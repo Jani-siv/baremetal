@@ -11,7 +11,7 @@
 
 class cpu : public decoder {
     public:
-        cpu(memory* mainMemory);
+        cpu(core::memory* mainMemory);
         ~cpu();
         short getCPUid();
         std::uint32_t getRegisterValue(unsigned int num);
@@ -49,7 +49,7 @@ class cpu : public decoder {
         uint32_t VTOR;                  //vectortable offset
         uint32_t vectortable;
         bool processorMode;
-        memory *ptr = nullptr;
+        core::memory *ptr = nullptr;
         void printRegistersValues(); 
 
 

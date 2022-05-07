@@ -11,6 +11,7 @@
 #define XIPCACHESIZE 16000
 #define SIOREGISTERS 94
 
+namespace core{
 class memory{
     public:
         memory();
@@ -35,4 +36,4 @@ class memory{
         std::uint32_t SIO[SIOREGISTERS];
         void initMemory();
 };
-
+}
