@@ -3,9 +3,8 @@
 #include "../include/cpu.h"
 int main()
 {
-    memory sharedmemory;
-    memory * ptr = &sharedmemory;
-    cpu cpuA(ptr);
+
+    cpu cpuA;
 	std::cout<<"help needed"<<std::endl;    
     return 0;
 }

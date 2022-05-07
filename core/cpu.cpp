@@ -1,8 +1,7 @@
 #include "../include/cpu.h"
 
-cpu::cpu(memory* mainMemory)
+cpu::cpu()
 {
-    this->ptr = mainMemory;
     this->CPUID = this->getCPUID();
     //sleep other cores, core 0 init all
     if (this->CPUID == 0x0)
@@ -105,23 +104,23 @@ void cpu::setNextInstructionAddress()
 
 void cpu::writeMemory(std::uint32_t address, const std::uint16_t &value)
 {
-    this->ptr->writeMemory(address,value);
+    core::systemMemory::sysMem.writeMemory(address,value);
 }
 
 void cpu::writeMemory32(std::uint32_t address, const std::uint32_t &value)
 {
-    this->ptr->writeMemory32(address, value);
+    core::systemMemory::sysMem.writeMemory32(address, value);
 }
 
 std::uint16_t cpu::readMemory(std::uint32_t address)
 {
-    std::uint16_t dataFromMemory = this->ptr->readMemory(address);
+    std::uint16_t dataFromMemory = core::systemMemory::sysMem.readMemory(address);
     return dataFromMemory;
 }
 
 std::uint32_t cpu::readMemory32(std::uint32_t address)
 {
-    std::uint32_t data = this->ptr->readMemory32(address);
+    std::uint32_t data = core::systemMemory::sysMem.readMemory32(address);
     return data;
 }
 
@@ -131,7 +130,7 @@ short cpu::getCPUid()
 }
 short cpu::getCPUID()
 {
-    return this->ptr->getCPUID();
+    return core::systemMemory::sysMem.getCPUID();
 }
 
 std::uint32_t cpu::getIPSRFlags()
