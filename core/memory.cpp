@@ -1,13 +1,11 @@
 #include "../include/memory.h"
 
-core::memory::memory()
-{
- this->initSIO();
-}
-core::memory::~memory()
-{
-}
 
+namespace core{
+    namespace systemMemory{
+        core::memory sysMem;
+    }
+}
 std::uint32_t core::memory::readMemory32(std::uint32_t address)
 {
     std::uint32_t data = 0x0;
@@ -134,6 +132,7 @@ void core::memory::initMemory()
         this->USBRAM[i] = 0x0;
     }
 
+    this->initSIO();
 }
 
 void core::memory::initSIO()

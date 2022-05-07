@@ -179,10 +179,10 @@ int testIPSRFlags(cpu& cpuA)
 }
 int main(int argc, char *argv[])
 {
-    core::memory mainMemory;
-    core::memory *ptr = &mainMemory;
-    cpu cpuA(ptr);
-    cpu cpuB(ptr);
+    std::cout<<"Start testing"<<std::endl;
+    core::systemMemory::sysMem.initMemory();
+    cpu cpuA;
+    cpu cpuB;
     std::vector<std::string> arguments(argv, argv + argc);
 
 for (std::string arg : arguments)

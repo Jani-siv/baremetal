@@ -11,7 +11,7 @@
 
 class cpu : public decoder {
     public:
-        cpu(core::memory* mainMemory);
+        cpu();
         ~cpu();
         short getCPUid();
         std::uint32_t getRegisterValue(unsigned int num);

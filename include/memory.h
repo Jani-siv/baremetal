@@ -12,10 +12,10 @@
 #define SIOREGISTERS 94
 
 namespace core{
-class memory{
+
+    class memory{
     public:
-        memory();
-        ~memory();
+        void initMemory();
         short getCPUID();
         void writeMemory(std::uint32_t address,const std::uint16_t &value);
         void writeMemory32(std::uint32_t, const std::uint32_t &value);
@@ -34,6 +34,12 @@ class memory{
         char USBRAM[USBRAMSIZE];
         char XIPCACHE[XIPCACHESIZE];
         std::uint32_t SIO[SIOREGISTERS];
-        void initMemory();
 };
 }
+
+namespace core{
+    namespace systemMemory{
+        extern core::memory sysMem;
+    }
+}
+
