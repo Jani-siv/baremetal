@@ -6,6 +6,7 @@ cpu::cpu()
     //sleep other cores, core 0 init all
     if (this->CPUID == 0x0)
     {
+        core::systemMemory::sysMem.initMemory();
     }
 
     this->TakeReset();
