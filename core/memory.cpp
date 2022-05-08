@@ -119,17 +119,17 @@ void core::memory::writeUsbram(std::uint32_t address,const std::uint16_t &value)
 
 void core::memory::initMemory()
 {
-    for (int i = 0; i < ROMSIZE; i++)
+    for (auto& i : this->ROM)
     {
-      this->ROM[i] = 0x0;
+      i = 0x0;
     }
-    for (int i = 0; i < SRAMSIZE; i++)
+    for (auto& i : this->SRAM)
     {
-        this->SRAM[i] = 0x0;
+        i = 0x0;
     }
-    for (int i = 0; i < USBRAMSIZE; i++)
+    for (auto& i : this->USBRAM)
     {
-        this->USBRAM[i] = 0x0;
+        i = 0x0;
     }
 
     this->initSIO();
@@ -137,9 +137,15 @@ void core::memory::initMemory()
 
 void core::memory::initSIO()
 {
-    for (int i = 0; i < SIOREGISTERS; i++)
+    //skip cpuID
+    int j = 0;
+    for (auto& i : this->SIO)
     {
-        this->SIO[i] = 0x0;
+        if (j > 0)
+        {
+            i = 0x0;
+        }
+        j++;
     }
 }
 
