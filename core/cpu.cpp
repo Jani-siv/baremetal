@@ -134,11 +134,6 @@ short cpu::getCPUID()
     return core::systemMemory::sysMem.getCPUID();
 }
 
-std::uint32_t cpu::getIPSRFlags()
-{
-    return this->xPSRRegisters.IPSR;
-}
-
 std::uint32_t cpu::getRegisterValue(unsigned int num)
 {
     if (num <16)
@@ -170,10 +165,11 @@ void cpu::TakeReset()
     //LR value from usersoftware
 
     //IPSR<5:0> = zeros
-    for (int i = 0; i < 6; i++)
-    {
-        this->xPSRRegisters.IPSR &= ~(1UL << i);
-    }
+    this->initIPSRRegister();
+    //for (int i = 0; i < 6; i++)
+    //{
+    //    this->xPSRRegisters.IPSR &= ~(1UL << i);
+    //}
 /*
 LR = bits(32) UNKNOWN;
 // Value must be initialised by software

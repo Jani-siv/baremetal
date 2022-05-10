@@ -18,7 +18,6 @@ void runAllTests(cpu& cpuA, cpu& cpuB)
     bool passTests = true;
     if (testRegisterInit(cpuA) < 0) exit(-1);
     if (testVectorTableAddressInit(cpuA) < 0) exit(-1);
-    if (testIPSRFlags(cpuA) < 0) exit(-1);
     if (testCPUID(cpuA,cpuB) < 0) exit(-1);
     if (testMemoryWriteAndRead(cpuA, cpuB) < 0) exit(-1);
     std::cout<<"Do you want run cpu? y/n:"<<std::endl;
@@ -160,23 +159,6 @@ int testVectorTableAddressInit(cpu& cpuA)
     }
 }
 
-int testIPSRFlags(cpu& cpuA)
-{
-    std::uint32_t test = cpuA.getIPSRFlags();
-    if ((test & 0x1F) > 0x00)
-    {
-        std::cout<<"IPSRFlags init FAIL"<<std::endl;
-        std::cout<<"IPSRFlags value: "<<std::hex<<(test & 0x1F)<<std::endl;
-    return -1;
-    }
-    else
-    {
-        std::cout<<"IPSRFlags init PASS"<<std::endl;
-        std::cout<<"IPSRFlags value: "<<std::hex<<(test & 0x1F)<<std::endl;
-    return 0;
-    }
-
-}
 int main(int argc, char *argv[])
 {
     std::cout<<"Start testing"<<std::endl;
