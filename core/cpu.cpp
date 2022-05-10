@@ -56,6 +56,16 @@ std::uint32_t cpu::fetchCycle()
     uint32_t data = this->readMemory32(address);
     return data;
 }
+std::uint8_t cpu::getAPSRCurrentCond()
+{
+    std::uint8_t cond = (this->xPSRRegisters.APSR & 0x0000000F);
+    return cond;
+}
+
+void cpu::setAPSRCondFlags(std::uint32_t flag)
+{
+    SETFLAG(this->xPSRRegisters.APSR, flag);
+}
 
 void cpu::decodeCycle(std::uint32_t data)
 {

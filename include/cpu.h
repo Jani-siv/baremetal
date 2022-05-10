@@ -8,6 +8,9 @@
 #include "../include/memory.h"
 #include "../include/decoder.h"
 #include "../include/opcodes.h"
+#include "../include/flags.h"
+
+
 
 class cpu : public decoder {
     public:
@@ -32,6 +35,8 @@ class cpu : public decoder {
         void * checkInterrputsRegisters();
         void * checkXIPRegisters();
         void setNextInstructionAddress();
+        std::uint8_t getAPSRCurrentCond();
+        void setAPSRCondFlags(std::uint32_t flag);
         std::uint32_t GPregisters[16];  //ARM core registers
         std::uint32_t * MSP = nullptr;
         std::uint32_t * PSP = nullptr;
