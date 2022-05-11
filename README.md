@@ -3,10 +3,14 @@
 Testing TDD and building Raspberry pi pico simulator using C++
 
 TO-DO
+
 cpu fetch and execute stages
+
 memory management (timing for multiple cores)
+
 CPUID 1 sleep mode for reset time
 
+Refactor test to use google tests
 
 
 DONE
