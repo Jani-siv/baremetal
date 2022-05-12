@@ -25,7 +25,7 @@ void cpu::runCpu()
     char *compare = &userInput[0];
     while (strcmp(compare, "q") != 0)
     {
-        std::uint32_t data = this->fetchCycle();
+        std::uint16_t data = this->fetchCycle();
         std::cout<<"data from memoty: "<<std::hex<<static_cast<int>(data)<<std::endl;
         this->decodeCycle(data);
         std::cout<<"General purpose registers:"<<std::endl;
@@ -47,31 +47,55 @@ void cpu::printRegistersValues()
     }
 }
 
-std::uint32_t cpu::fetchCycle()
+std::uint16_t cpu::fetchCycle()
 {
-    uint32_t address = this->_PC[0];
+    std::uint32_t address = this->_PC[0];
     std::cout<<"address: "<<std::hex<<static_cast<int>(address)<<std::endl;
     std::cout<<"PC* "<<std::hex<<static_cast<int>(this->_PC[0])<<std::endl;
     this->setNextInstructionAddress();
-    uint32_t data = this->readMemory32(address);
+    std::uint16_t data = this->readMemory(address);
     return data;
 }
 
-void cpu::decodeCycle(std::uint32_t data)
+void cpu::decodeCycle(std::uint16_t data)
 {
-    unsigned int decodedValue = 0;
-    uint16_t opToDecode = (data >> 16);
-    decodedValue = decodeOP(opToDecode);
+    std::uint16_t decodedValue = decodeOP(data);
+    std::uint8_t imm5 = 0x0;
+    std::uint8_t imm8 = 0x0;
+    std::uint8_t Rm=0x0, Rd=0x0;
+    std::cout<<"imm5: "<<std::hex<<static_cast<int>(imm5)<<std::endl;
     switch(decodedValue)
     {
         case LSLS:
              {
+                 Rd = data & 0x7;
+                 Rm = data >> 3 & 0x7;
+                 std::cout<<std::hex<<"Rd: "<<static_cast<int>(Rd)<<" Rm: "<<static_cast<int>(Rm)<<std::endl;
+                 imm5 = getImm5(data);
                  std::cout<<"LSLS"<<std::endl;
+                 if (imm5 == 0x0)
+                 {
+                     //MOV register
+                     if (Rd == 0xF)
+                     {
+                        this->_PC[0] = Rm;
+                     }
+                     else
+                     {
+                        this->GPregisters[Rd] = Rd;
+                     }
+                 }
+                 //rd (destination) = rm shift bytes imm5 left
+                 this->GPregisters[Rd] = this->GPregisters[Rm] << imm5;
+                 std::cout<<std::hex<<"Result: "<<static_cast<int>(this->GPregisters[Rd])<<std::endl;
                  break;
              }
         case MOVS:
              {
-                 std::cout<<"MOVS"<<std::endl;
+                 Rd = (data >> 8 & 0x7);
+                 imm8 = getImm8(data);
+                 this->GPregisters[Rd] = imm8;
+                 std::cout<<"MOVS: "<<static_cast<int>(this->GPregisters[Rd])<<std::endl;
                  break;
              }
         case STR:

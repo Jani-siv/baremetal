@@ -27,8 +27,8 @@ class cpu : public decoder, cpuRegister {
     private:
         short CPUID;
         short getCPUID();
-        std::uint32_t fetchCycle();
-        void decodeCycle(std::uint32_t data);
+        std::uint16_t fetchCycle();
+        void decodeCycle(std::uint16_t data);
         void executeCycle();
         void setNextInstructionAddress();
         std::uint32_t GPregisters[16];  //ARM core registers

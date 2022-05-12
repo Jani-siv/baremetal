@@ -29,9 +29,9 @@ namespace core{
         uint32_t *stackBaseAddress = nullptr;
         uint32_t *tempStackBaseAddress = nullptr;
         void initSIO();
-        char ROM[ROMSIZE];
-        char SRAM[SRAMSIZE];
-        char USBRAM[USBRAMSIZE];
+        std::uint8_t ROM[ROMSIZE];
+        std::uint8_t SRAM[SRAMSIZE];
+        std::uint8_t USBRAM[USBRAMSIZE];
         char XIPCACHE[XIPCACHESIZE];
         std::uint32_t SIO[SIOREGISTERS];
 };

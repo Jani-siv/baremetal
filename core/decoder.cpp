@@ -19,6 +19,7 @@ unsigned int decoder::decodeOP(std::uint16_t data)
 {
     uint8_t op = 0x00;
     op = (data >> 12) & 0xF;
+std::cout<<"in decorder: "<<std::hex<<static_cast<int>(op)<<std::endl;
     if (op == LSLS)
     {
         return LSLS;
@@ -45,4 +46,14 @@ unsigned int decoder::decodeOP(std::uint16_t data)
     }
 }
 
+std::uint8_t decoder::getImm5(std::uint16_t data)
+{
+    std::uint8_t imm5 = ((data >> 6) & (0x1F));
+    return imm5;
+}
 
+std::uint8_t decoder::getImm8(std::uint16_t data)
+{
+    std::uint8_t imm8 = (data & 0xFF);
+    return imm8;
+}
