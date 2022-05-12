@@ -31,11 +31,16 @@ std::uint16_t core::memory::readMemory(std::uint32_t address)
     std::uint16_t data = 0x0;
     if (address < SRAMBASE)
     {
-        for (int i=0; i < 2; i++)
-        {
-            data = (data << 8);
-            data += this->ROM[address+i];
-        }
+       // for (int i=0; i < 2; i++)
+        //{
+            data = this->ROM[address];
+            data = ( data << 8);
+            data += this->ROM[address+1];
+            //data += this->ROM[address+i];
+        //}
+            std::cout<<"Read from memory func high: "<<std::hex<<static_cast<int>(this->ROM[address])<<std::endl;
+
+            std::cout<<"Read from memory func low: "<<std::hex<<static_cast<int>(this->ROM[1])<<std::endl;
             return data;
         
     }
@@ -81,14 +86,16 @@ void core::memory::writeMemory(std::uint32_t address,const std::uint16_t &value)
 
 void core::memory::writeRom(const std::uint32_t address,const std::uint16_t &value)
 {
-    std::uint16_t mask = 0x00FF;
-    for (int i = 0; i < 2; i++)
-    {
-        char convertedValue[1];
-        convertedValue[0] = (value & mask) >> (8*i);
-        std::memcpy(&this->ROM[(address+(1-i))],&convertedValue[0],sizeof(char));
-        mask = (mask << 8);
-    }
+    std::cout<<"Writing to rom: "<<std::hex<<static_cast<int>(value)<<std::endl;
+    uint8_t low = (value & 0x00FF);
+    uint8_t high = (value >> 8) & 0x00FF;
+    std::cout<<"writeRom: high "<<std::hex<<static_cast<int>(high)<<std::endl;
+    std::cout<<"writeRom: low "<<std::hex<<static_cast<int>(low)<<std::endl;
+    std::memcpy(&this->ROM[(address)],&high,sizeof(std::uint8_t));
+    std::memcpy(&this->ROM[(address+(1))],&low,sizeof(std::uint8_t));
+
+    std::cout<<"Rom: high "<<std::hex<<static_cast<int>(this->ROM[0])<<std::endl;
+    std::cout<<"Rom: low "<<std::hex<<static_cast<int>(this->ROM[1])<<std::endl;
 }
 
 void core::memory::writeSram(std::uint32_t address,const std::uint16_t &value)

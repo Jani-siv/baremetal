@@ -27,7 +27,7 @@ void runAllTests(cpu& cpuA, cpu& cpuB)
     if (answer[0] == 'y')
     {
     //set test data to test assembly
-    cpuA.writeMemory(0x00000000, 0x0000);
+    cpuA.writeMemory(0x00000000, 0x0080);
     cpuA.writeMemory(0x00000004, 0x2000);
     cpuA.writeMemory(0x00000008, 0x6000);
     cpuA.writeMemory(0x0000000C, 0xB000);

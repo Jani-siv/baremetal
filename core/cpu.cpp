@@ -25,7 +25,7 @@ void cpu::runCpu()
     char *compare = &userInput[0];
     while (strcmp(compare, "q") != 0)
     {
-        std::uint32_t data = this->fetchCycle();
+        std::uint16_t data = this->fetchCycle();
         std::cout<<"data from memoty: "<<std::hex<<static_cast<int>(data)<<std::endl;
         this->decodeCycle(data);
         std::cout<<"General purpose registers:"<<std::endl;
@@ -47,26 +47,31 @@ void cpu::printRegistersValues()
     }
 }
 
-std::uint32_t cpu::fetchCycle()
+std::uint16_t cpu::fetchCycle()
 {
-    uint32_t address = this->_PC[0];
+    std::uint32_t address = this->_PC[0];
     std::cout<<"address: "<<std::hex<<static_cast<int>(address)<<std::endl;
     std::cout<<"PC* "<<std::hex<<static_cast<int>(this->_PC[0])<<std::endl;
     this->setNextInstructionAddress();
-    uint32_t data = this->readMemory32(address);
+    std::uint16_t data = this->readMemory(address);
     return data;
 }
 
-void cpu::decodeCycle(std::uint32_t data)
+void cpu::decodeCycle(std::uint16_t data)
 {
-    unsigned int decodedValue = 0;
-    uint16_t opToDecode = (data >> 16);
-    decodedValue = decodeOP(opToDecode);
+    std::cout<<"32data from fetch: "<<std::hex<<static_cast<int>(data)<<std::endl;
+    std::uint16_t decodedValue = decodeOP(data);
+    std::cout<<"value from decoder"<<std::hex<<static_cast<int>(decodedValue)<<std::endl;
     switch(decodedValue)
     {
         case LSLS:
              {
                  std::cout<<"LSLS"<<std::endl;
+                 if (((data > 6) & 0x1F) == 0x00000)
+                 {
+                     std::cout<<"imm5 = 0x00000"<<std::endl;
+                 }
+                 std::cout<<std::hex<<static_cast<int>((data > 6) & 0x1F)<<std::endl;
                  break;
              }
         case MOVS:
