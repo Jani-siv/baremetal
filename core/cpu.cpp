@@ -62,7 +62,7 @@ void cpu::decodeCycle(std::uint16_t data)
     std::uint16_t decodedValue = decodeOP(data);
     std::uint8_t imm5 = 0x0;
     std::uint8_t imm8 = 0x0;
-    std::uint8_t Rm=0x0, Rd=0x0;
+    std::uint8_t Rm=0x0, Rd=0x0, Rt=0x0, Rn=0x0;
     std::cout<<"imm5: "<<std::hex<<static_cast<int>(imm5)<<std::endl;
     switch(decodedValue)
     {
@@ -100,6 +100,13 @@ void cpu::decodeCycle(std::uint16_t data)
              }
         case STR:
              {
+                 //rn base register
+                 imm5 = getImm5(data);
+                 Rt = data & 0x7;
+                 Rn = (data >> 3 & 0x7);
+                 writeMemory32((this->GPregisters[Rt]+imm5), this->GPregisters[Rn]);
+                 std::cout<<std::hex<<"Value: "<<(this->GPregisters[Rt]+imm5)<<" to:"<<this->GPregisters[Rn]<<std::endl; 
+
                  std::cout<<"STR"<<std::endl;
                  break;
              }
