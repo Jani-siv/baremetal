@@ -27,11 +27,14 @@ void runAllTests(cpu& cpuA, cpu& cpuB)
     if (answer[0] == 'y')
     {
     //set test data to test assembly
-    cpuA.writeMemory(0x00000000, 0x2019);
-    cpuA.writeMemory(0x00000004, 0x23D0);
-    cpuA.writeMemory(0x00000008, 0x061B);
-    cpuA.writeMemory(0x0000000C, 0x625A);
-    cpuA.writeMemory(0x00000010, 0x24D0);
+    cpuA.writeMemory(0x00000000, 0xB570);
+    cpuA.writeMemory(0x00000004, 0x2019);
+    cpuA.writeMemory(0x00000008, 0x23d0);
+    cpuA.writeMemory(0x0000000C, 0x061b);
+    cpuA.writeMemory(0x00000010, 0x2280);
+cpuA.writeMemory(0x00000014, 0x0492);
+cpuA.writeMemory(0x00000018, 0x625a);
+cpuA.writeMemory(0x0000001C, 0x24d0);
     cpuA.runCpu();
     }
 }

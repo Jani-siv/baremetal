@@ -21,7 +21,7 @@ namespace core{
         void writeMemory32(std::uint32_t, const std::uint32_t &value);
         std::uint16_t readMemory(std::uint32_t address);
         std::uint32_t readMemory32(std::uint32_t address);
-
+        std::uint32_t getStackEntry();
     private:
         void writeRom(const std::uint32_t address,const std::uint16_t &value);
         void writeSram(std::uint32_t address, const std::uint16_t &value);

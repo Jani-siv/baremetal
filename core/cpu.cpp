@@ -103,8 +103,11 @@ void cpu::decodeCycle(std::uint16_t data)
                  //rn base register
                  imm5 = getImm5(data);
                  Rt = data & 0x7;
+                 std::cout<<"RT: "<<std::hex<<static_cast<int>(Rt)<<std::endl;
                  Rn = (data >> 3 & 0x7);
-                 writeMemory32((this->GPregisters[Rt]+imm5), this->GPregisters[Rn]);
+                 std::uint32_t address = this->GPregisters[Rt]+imm5;
+                 std::cout<<"address: "<<std::hex<<static_cast<int>(address)<<std::endl;
+                 writeMemory32(address, this->GPregisters[Rn]);
                  std::cout<<std::hex<<"Value: "<<(this->GPregisters[Rt]+imm5)<<" to:"<<this->GPregisters[Rn]<<std::endl; 
 
                  std::cout<<"STR"<<std::endl;
@@ -112,7 +115,17 @@ void cpu::decodeCycle(std::uint16_t data)
              }
         case PUSH:
              {
+                for (auto i = 0; i < 15; i++)
+                {
+                    uint8_t val = (data >> i & 0x01);
+                    if (val > 0x0)
+                    {
+                        this->writeStack(this->GPregisters[i]);
+                        std::cout<<"Register "<<i<<"store data to stack: "<<std::hex<<static_cast<int>(this->SP[0])<<std::endl;
+                    }
+                }
                  std::cout<<"PUSH"<<std::endl;
+                 
                  break;
              }
         case BL:
@@ -142,6 +155,12 @@ void cpu::writeMemory(std::uint32_t address, const std::uint16_t &value)
 void cpu::writeMemory32(std::uint32_t address, const std::uint32_t &value)
 {
     core::systemMemory::sysMem.writeMemory32(address, value);
+}
+
+void cpu::writeStack(const std::uint32_t &value)
+{
+    this->writeMemory32(this->SP[0],value);
+    this->SP[0] -= 0x4;
 }
 
 std::uint16_t cpu::readMemory(std::uint32_t address)
@@ -201,6 +220,10 @@ void cpu::TakeReset()
     //{
     //    this->xPSRRegisters.IPSR &= ~(1UL << i);
     //}
+    std::uint32_t stack = core::systemMemory::sysMem.getStackEntry();
+    this->SP[0] = stack;
+
+    
 /*
 LR = bits(32) UNKNOWN;
 // Value must be initialised by software
